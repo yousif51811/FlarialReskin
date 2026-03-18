@@ -4,9 +4,77 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Flarial"
-        mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        mc:Ignorable="d" WindowStyle="None" ResizeMode="NoResize"
+        Title="MainWindow" Height="350" Width="550">
+    <WindowChrome.WindowChrome>
+        <WindowChrome CaptionHeight="0" GlassFrameThickness="0" UseAeroCaptionButtons="False" CornerRadius="20"/>
+    </WindowChrome.WindowChrome>
     <Grid>
-
+        <Grid.RowDefinitions>
+            <RowDefinition Height="50"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <Grid Grid.RowSpan="100">
+            <!-- Drag Bar (Entire window) -->
+            <Rectangle x:Name="DragBar" 
+                       HorizontalAlignment="Stretch"
+                       VerticalAlignment="Stretch"
+                       Fill="Transparent"
+                       Panel.ZIndex="-1"
+                       MouseLeftButtonDown="Rectangle_MouseLeftButtonDown"/>
+            <!-- Background -->
+            <Image Source="/Assets/Images/background.png"
+                   VerticalAlignment="Stretch"
+                   HorizontalAlignment="Stretch"
+                   Stretch="Fill"
+                   Panel.ZIndex="-99"/>
+            <Rectangle Panel.ZIndex="-98">
+                <Rectangle.Fill>
+                    <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                        <GradientStop Color="#99000000" Offset="0"/>
+                        <GradientStop Color="#00000000" Offset="1"/>
+                    </LinearGradientBrush>
+                </Rectangle.Fill>
+            </Rectangle>
+        </Grid>
+        <!-- Title bar -->
+        <Grid Grid.Row="0">
+            <!-- Window Controls -->
+            <StackPanel Orientation="Horizontal" FlowDirection="RightToLeft">
+                <Button x:Name="CloseBtn"
+                        Style="{DynamicResource WindowControl}"
+                        Content=""
+                        HorizontalAlignment="Right"
+                        Click="CloseBtn_Click"/>
+                <Button x:Name="MinimizeBtn"
+                        Style="{DynamicResource WindowControl}"
+                        Content=""
+                        HorizontalAlignment="Right"
+                        Click="MinimizeBtn_Click"/>
+            </StackPanel>
+            <!-- Title -->
+            <StackPanel Orientation="Horizontal" VerticalAlignment="Bottom">
+                <Image Source="/Assets/Images/logo.png"
+                       Width="50" Margin="10,15,0,10"
+                       IsHitTestVisible="False"/>
+                <Label Content="Flarial Client"
+                       Style="{DynamicResource ResourceKey=Heading}"
+                       IsHitTestVisible="False"/>
+            </StackPanel>
+        </Grid>
+        <!-- Main Content -->
+        <Grid Grid.Row="1">
+            <Button Style="{DynamicResource PrimaryButton}"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Width="150">
+                <Button.Content>
+                    <TextBlock>
+                        <Run FontFamily="Segoe Fluent Icons" Text=" " BaselineAlignment="Center"/>
+                        <Run Text="Launch"/>
+                    </TextBlock>
+                </Button.Content>
+            </Button>
+        </Grid>
     </Grid>
 </Window>
