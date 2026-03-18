@@ -1,13 +1,8 @@
-﻿using System.Text;
+﻿using System.IO;
+using System.Net;
+using System.Net.Http;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Animation;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
 using System.Windows.Shapes;
 
 namespace Flarial
@@ -17,14 +12,11 @@ namespace Flarial
     /// </summary>
     public partial class MainWindow : Window
     {
+
         public MainWindow()
         {
             InitializeComponent();
         }
-
-
-
-
         /// <summary>
         /// Window Dragbar logic
         /// </summary>
@@ -43,6 +35,26 @@ namespace Flarial
         private void MinimizeBtn_Click(object sender, RoutedEventArgs e)
         {
             WindowState = WindowState.Minimized;
+        }
+
+        private async void LaunchBtn_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                LaunchBtn.IsEnabled = false;
+                LaunchContent.Text = "Updating";
+                LaunchIcon.Text = " ";
+                await ClientHandler.CheckForUpdates();
+                LaunchContent.Text = "Starting";
+                LaunchIcon.Text = " ";
+                await ClientHandler.StartGame();
+                LaunchContent.Text = "Launch";
+                LaunchBtn.IsEnabled = true;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
         }
     }
 }

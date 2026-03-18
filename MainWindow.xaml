@@ -64,17 +64,36 @@
         </Grid>
         <!-- Main Content -->
         <Grid Grid.Row="1">
-            <Button Style="{DynamicResource PrimaryButton}"
-                    HorizontalAlignment="Center"
-                    VerticalAlignment="Center"
-                    Width="150">
-                <Button.Content>
-                    <TextBlock>
-                        <Run FontFamily="Segoe Fluent Icons" Text=" " BaselineAlignment="Center"/>
-                        <Run Text="Launch"/>
-                    </TextBlock>
-                </Button.Content>
-            </Button>
+            <!-- Center Buttons -->
+            <StackPanel Orientation="Vertical"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center">
+                <Button Style="{DynamicResource PrimaryButton}"
+                        Width="150"
+                        x:Name="LaunchBtn"
+                        Click="LaunchBtn_Click">
+                    <Button.Content>
+                        <TextBlock>
+                            <Run x:Name="LaunchIcon"
+                                 FontFamily="Segoe Fluent Icons"
+                                 Text=" "
+                                 BaselineAlignment="Center"/>
+                            <Run x:Name="LaunchContent" 
+                                 Text="Launch"/>
+                        </TextBlock>
+                    </Button.Content>
+                </Button>
+                
+            </StackPanel>
+            <!-- Disclaimer -->
+            <Label Content="Not affiliated with FlarialMC"
+                   HorizontalAlignment="Center"
+                   VerticalAlignment="Bottom"
+                   Margin="0,0,0,10"
+                   Foreground="#80FFFFFF"
+                   FontSize="10"
+                   Opacity="0.7"
+                   FontFamily="Comic Sans MS"/>
         </Grid>
     </Grid>
 </Window>
