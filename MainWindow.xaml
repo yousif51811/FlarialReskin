@@ -60,6 +60,7 @@
                 <Label Content="Flarial Client"
                        Style="{DynamicResource ResourceKey=Heading}"
                        IsHitTestVisible="False"/>
+
             </StackPanel>
         </Grid>
         <!-- Main Content -->
@@ -68,6 +69,16 @@
             <StackPanel Orientation="Vertical"
                         HorizontalAlignment="Center"
                         VerticalAlignment="Center">
+                <TextBlock TextAlignment="Center"
+                           Margin="0,0,0,20"
+                           IsHitTestVisible="False">
+                    <Run Style="{DynamicResource MainGreeting}"
+                         Text="Good morning!"
+                         x:Name="GreetingMain"/>
+                    <LineBreak/>
+                    <Run Style="{DynamicResource SecondaryGreeting}"
+                         Text="Ready to play?"/>
+                </TextBlock>
                 <Button Style="{DynamicResource PrimaryButton}"
                         Width="150"
                         x:Name="LaunchBtn"
@@ -83,7 +94,23 @@
                         </TextBlock>
                     </Button.Content>
                 </Button>
-                
+                <Button x:Name="SettingsBtn"
+                        Style="{DynamicResource SecondaryButton}"
+                        Margin="8,5,8,8"
+                        Height="38"
+                        Width="125"
+                        IsEnabled="False">
+                    <Button.Content>
+                        <TextBlock>
+                            <Run FontFamily="Segoe Fluent Icons"
+                                 Text=" "
+                                 BaselineAlignment="Center"/>
+                            <Run Text="Options"/>
+                        </TextBlock>
+                    </Button.Content>
+                </Button>
+
+
             </StackPanel>
             <!-- Disclaimer -->
             <Label Content="Not affiliated with FlarialMC"
@@ -93,7 +120,8 @@
                    Foreground="#80FFFFFF"
                    FontSize="10"
                    Opacity="0.7"
-                   FontFamily="Comic Sans MS"/>
+                   FontFamily="Comic Sans MS"
+                   IsHitTestVisible="False"/>
         </Grid>
     </Grid>
 </Window>

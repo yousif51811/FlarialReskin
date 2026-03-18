@@ -16,6 +16,7 @@ namespace Flarial
         public MainWindow()
         {
             InitializeComponent();
+            GetTime();
         }
         /// <summary>
         /// Window Dragbar logic
@@ -27,6 +28,9 @@ namespace Flarial
             Console.WriteLine("Dragging window...");
         }
 
+        /// <summary>
+        /// Window Controls Logic.
+        /// </summary>
         private void CloseBtn_Click(object sender, RoutedEventArgs e)
         {
             Application.Current.Shutdown();
@@ -37,6 +41,9 @@ namespace Flarial
             WindowState = WindowState.Minimized;
         }
 
+        /// <summary>
+        /// Launching the game.
+        /// </summary>
         private async void LaunchBtn_Click(object sender, RoutedEventArgs e)
         {
             try
@@ -54,6 +61,29 @@ namespace Flarial
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
+            }
+        }
+
+
+        /// <summary>
+        /// Sets the greeting text based on the current time of day.
+        /// </summary>
+        private async void GetTime()
+        {
+            switch (DateTime.Now.Hour) 
+            {
+                case >= 5 and < 12:
+                    GreetingMain.Text = "Good Morning!";
+                    break;
+                case >= 12 and < 18:
+                    GreetingMain.Text = "Good Afternoon!";
+                    break;
+                case >= 18 and < 22:
+                    GreetingMain.Text = "Good Evening!";
+                    break;
+                case >= 22 or < 5:
+                    GreetingMain.Text = "Good Night!";
+                    break;
             }
         }
     }
