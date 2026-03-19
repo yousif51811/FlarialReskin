@@ -16,10 +16,10 @@ namespace Flarial
     {
         private static readonly HttpClient client = new HttpClient();
         private const string LauncherURL = "https://cdn.flarial.xyz/launcher/Flarial.Launcher.exe";
-        private const string LauncherPath = "./Assets/DLL/Launcher.exe";
+        public const string LauncherPath = "./Assets/DLL/Launcher.exe";
         private const string LauncherVersion = "https://cdn.flarial.xyz/launcher/launcherVersion.txt";
         private const string DLLURL = "https://cdn.flarial.xyz/dll/latest.dll";
-        private const string DLLPath = "./Assets/DLL/Flarial.dll";
+        public const string DLLPath = "./Assets/DLL/Flarial.dll";
         private const string DLLHASHES = "https://cdn.flarial.xyz/dll_hashes.json";
 
 
@@ -51,7 +51,7 @@ namespace Flarial
                         }
                     }
                 }
-                catch (Exception ex)
+                catch
                 {
                     return false;
                 }
@@ -106,6 +106,15 @@ namespace Flarial
              */
             try
             {
+                if (Properties.Settings.Default.CustomLauncher)
+                {
+                    if (!File.Exists(Properties.Settings.Default.LauncherDir))
+                    {
+                        return false;
+                    }
+                    return true;
+                }
+                    
                 if (!File.Exists(LauncherPath))
                 {
                     bool success = await DownloadLauncher();
@@ -131,6 +140,15 @@ namespace Flarial
              */
             try
             {
+                if (Properties.Settings.Default.CustomDLL)
+                {
+                    if (!File.Exists(Properties.Settings.Default.DLLDir))
+                    {
+                        return false;
+                    }
+                    return true;
+                }
+
                 if (!File.Exists(DLLPath))
                 {
                     bool success = await DownloadDLL();
@@ -179,15 +197,31 @@ namespace Flarial
         /// </summary>
         public static async Task<bool> StartGame()
         {
+            /* 
+             * Use custom path if enabled, otherwise use the default path.
+             */
+            string path = Path.GetFullPath(DLLPath);
+            if (Properties.Settings.Default.CustomDLL)
+            {
+                if (!File.Exists(Properties.Settings.Default.DLLDir))
+                {
+                    return false;
+                }
+                else
+                {
+                    path = Path.GetFullPath(Properties.Settings.Default.DLLDir);
+                }
+            }
+
             try
             {
-                // Run the launcher with the --inject [DLLPath] to start the game
+                // Run the launcher with the --inject [DLLPath] argument to start the game
                 await Task.Run(() =>
                 {
                     ProcessStartInfo startInfo = new ProcessStartInfo
                     {
                         FileName = LauncherPath,
-                        Arguments = $"--inject \"{Path.GetFullPath(DLLPath)}\"",
+                        Arguments = $"--inject \"{path}\"",
                         UseShellExecute = false,
                         CreateNoWindow = true
                     };

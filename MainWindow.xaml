@@ -41,7 +41,9 @@
         <!-- Title bar -->
         <Grid Grid.Row="0">
             <!-- Window Controls -->
-            <StackPanel Orientation="Horizontal" FlowDirection="RightToLeft">
+            <StackPanel Orientation="Horizontal" 
+                        FlowDirection="RightToLeft"
+                        Panel.ZIndex="1000">
                 <Button x:Name="CloseBtn"
                         Style="{DynamicResource WindowControl}"
                         Content=""
@@ -101,7 +103,7 @@
                         Margin="8,5,8,8"
                         Height="38"
                         Width="125"
-                        IsEnabled="False">
+                        Click="SettingsBtn_Click">
                     <Button.Content>
                         <TextBlock>
                             <Run FontFamily="Segoe Fluent Icons"
@@ -129,6 +131,26 @@
                        FontFamily="Comic Sans MS"
                        IsHitTestVisible="False"/>
         </Grid>
-        
+        <!-- Options border -->
+        <Border x:Name="OptionsBorder"
+                Grid.RowSpan="100"
+                Grid.ColumnSpan="100"
+                Panel.ZIndex="100"
+                VerticalAlignment="Bottom"
+                HorizontalAlignment="Stretch"
+                Height="0"
+                Margin="10,0,10,0"
+                ClipToBounds="True"
+                Opacity="0.9">
+        </Border>
+        <!-- Modal Dim -->
+        <Border x:Name="dimwindow"
+                Opacity="0"
+                Background="Black"
+                Grid.ColumnSpan="100"
+                Grid.RowSpan="10"
+                Panel.ZIndex="97"
+                IsHitTestVisible="False"
+                MouseDown="dimwindow_MouseDown"/>
     </Grid>
 </Window>

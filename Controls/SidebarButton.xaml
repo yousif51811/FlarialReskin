@@ -1,0 +1,22 @@
+﻿<UserControl x:Class="Flarial.Controls.SidebarButton"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Flarial.Controls"
+             mc:Ignorable="d" 
+             d:DesignHeight="50" d:DesignWidth="100">
+    <Grid>
+        <Button Style="{DynamicResource DisabledTabButton}" 
+                x:Name="MyBtn"
+                Click="MyBtn_Click">
+            <Button.Content>
+                <TextBlock>
+                    <Run Text="{Binding Icon}" FontFamily="Segoe Fluent Icons"
+                         BaselineAlignment="Center"/>
+                    <Run Text="{Binding Text}" BaselineAlignment="Center"/>
+                </TextBlock>
+            </Button.Content>
+        </Button>
+    </Grid>
+</UserControl>

@@ -9,6 +9,7 @@
                 <ResourceDictionary Source="/Styles/TitleBar.xaml"/>
                 <ResourceDictionary Source="/Styles/Buttons.xaml"/>
                 <ResourceDictionary Source="/Styles/Greetings.xaml"/>
+                <ResourceDictionary Source="/Styles/Options.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>

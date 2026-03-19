@@ -1,9 +1,11 @@
-﻿using System.Diagnostics;
+﻿using Flarial.Pages;
+using System.Diagnostics;
 using System.IO;
 using System.Net;
 using System.Net.Http;
 using System.Windows;
 using System.Windows.Input;
+using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 
 namespace Flarial
@@ -13,14 +15,16 @@ namespace Flarial
     /// </summary>
     public partial class MainWindow : Window
     {
-
+        // Options Page object
+        private Options options = new Options();
         public MainWindow()
         {
             InitializeComponent();
             GetTime();
+            OptionsBorder.Child = options;
         }
         /// <summary>
-        /// Window Dragbar logic
+        /// Window Controls Logic.
         /// </summary>
         private void Rectangle_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
@@ -29,9 +33,6 @@ namespace Flarial
             Console.WriteLine("Dragging window...");
         }
 
-        /// <summary>
-        /// Window Controls Logic.
-        /// </summary>
         private void CloseBtn_Click(object sender, RoutedEventArgs e)
         {
             Application.Current.Shutdown();
@@ -41,6 +42,8 @@ namespace Flarial
         {
             WindowState = WindowState.Minimized;
         }
+
+
 
         /// <summary>
         /// Launching the game.
@@ -103,6 +106,60 @@ namespace Flarial
                     GreetingMain.Text = "Good Evening!";
                     break;
             }
+        }
+
+        /// <summary>
+        /// opening or closing the options menu.
+        /// </summary>
+        /// <param name="open"> Wether to close or open the options. </param>
+        private async void ShowOptions(bool open = true)
+        {
+            Duration time = TimeSpan.FromSeconds(0.2);
+            if (open)
+            {
+                DoubleAnimation OpenAnimation = new DoubleAnimation
+                {
+                    To = 250,
+                    Duration = time,
+                    AccelerationRatio = 0.5,
+                };
+                OptionsBorder.BeginAnimation(HeightProperty, OpenAnimation);
+                DoubleAnimation FadeInDIm = new DoubleAnimation
+                {
+                    To = 0.5,
+                    Duration = time,
+                };
+                dimwindow.BeginAnimation(OpacityProperty, FadeInDIm);
+                dimwindow.IsHitTestVisible = true;
+            }
+            else
+            {
+                DoubleAnimation CloseAnimation = new DoubleAnimation
+                {
+                    To = 0,
+                    Duration = time,
+                };
+                OptionsBorder.BeginAnimation(HeightProperty, CloseAnimation);
+                DoubleAnimation FadeInDIm = new DoubleAnimation
+                {
+                    To = 0,
+                    Duration = time,
+
+                };
+                dimwindow.BeginAnimation(OpacityProperty, FadeInDIm);
+                dimwindow.IsHitTestVisible = false;
+            }
+            
+        }
+
+        private void SettingsBtn_Click(object sender, RoutedEventArgs e)
+        {
+            ShowOptions();
+        }
+
+        private void dimwindow_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            ShowOptions(false);
         }
     }
 }
