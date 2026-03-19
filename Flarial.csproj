@@ -6,6 +6,8 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <UseWPF>true</UseWPF>
+	<FileVersion>v0.1.0</FileVersion>
+	  <ApplicationIcon>Assets\Images\logo.ico</ApplicationIcon>
   </PropertyGroup>
 
   <ItemGroup>

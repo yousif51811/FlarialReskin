@@ -13,6 +13,7 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="50"/>
             <RowDefinition/>
+            <RowDefinition Height="40"/>
         </Grid.RowDefinitions>
         <Grid Grid.RowSpan="100">
             <!-- Drag Bar (Entire window) -->
@@ -59,13 +60,14 @@
                        IsHitTestVisible="False"/>
                 <Label Content="Flarial Client"
                        Style="{DynamicResource ResourceKey=Heading}"
-                       IsHitTestVisible="False"/>
+                       IsHitTestVisible="False"
+                       VerticalContentAlignment="Center"/>
 
             </StackPanel>
         </Grid>
         <!-- Main Content -->
         <Grid Grid.Row="1">
-            <!-- Center Buttons -->
+            <!-- Center Buttons and greeting -->
             <StackPanel Orientation="Vertical"
                         HorizontalAlignment="Center"
                         VerticalAlignment="Center">
@@ -112,16 +114,21 @@
 
 
             </StackPanel>
+
+        </Grid>
+        <!-- Footer -->
+        <Grid Grid.Row="3" IsHitTestVisible="False"
+              VerticalAlignment="Center">
             <!-- Disclaimer -->
             <Label Content="Not affiliated with FlarialMC"
-                   HorizontalAlignment="Center"
-                   VerticalAlignment="Bottom"
-                   Margin="0,0,0,10"
-                   Foreground="#80FFFFFF"
-                   FontSize="10"
-                   Opacity="0.7"
-                   FontFamily="Comic Sans MS"
-                   IsHitTestVisible="False"/>
+                       HorizontalAlignment="Center"
+                       VerticalAlignment="Center"
+                       Foreground="#80FFFFFF"
+                       FontSize="10"
+                       Opacity="0.7"
+                       FontFamily="Comic Sans MS"
+                       IsHitTestVisible="False"/>
         </Grid>
+        
     </Grid>
 </Window>

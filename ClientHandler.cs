@@ -26,13 +26,15 @@ namespace Flarial
         /// <summary>
         /// Responsible for downloading the Launcher
         /// </summary>
-        private static async Task DownloadLauncher()
+        private static async Task<bool> DownloadLauncher()
         {
-
-            if (!File.Exists(LauncherPath))
-            {
                 try
                 {
+                    // Delete existing launcher if it exists
+                    if (File.Exists(LauncherPath))
+                    {
+                        File.Delete(LauncherPath);
+                    }
                     // Ensure directory exists
                     string directory = System.IO.Path.GetDirectoryName(LauncherPath)!;
                     if (!Directory.Exists(directory))
@@ -51,24 +53,26 @@ namespace Flarial
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine($"Failed to download Launcher: {ex.Message}");
+                    return false;
                 }
-            }
+            return false;
         }
+            
 
 
 
         /// <summary>
         /// Responsible for downloading the DLL
         /// </summary>
-        private static async Task DownloadDLL()
+        private static async Task<bool> DownloadDLL()
         {
-
-
-            if (!File.Exists(DLLPath))
-            {
                 try
                 {
+                    // Delete existing DLL if it exists
+                    if (File.Exists(DLLPath))
+                    {
+                        File.Delete(DLLPath);
+                    }
                     // Ensure directory exists
                     string directory = System.IO.Path.GetDirectoryName(DLLPath)!;
                     if (!Directory.Exists(directory))
@@ -82,21 +86,18 @@ namespace Flarial
                         using (var fs = new FileStream(DLLPath, FileMode.Create))
                         {
                             await response.Content.CopyToAsync(fs);
+                            return true;
                         }
-                    }
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine($"Failed to download DLL: {ex.Message}");
                 }
             }
+                catch {  return false; }
         }
 
 
         /// <summary>
         /// Checks for Updates if needed and downloads them
         /// </summary>
-        public static async Task CheckForUpdates()
+        public static async Task<bool> CheckForUpdates()
         {
             /*
              * Start by getting the launcher version from the flarial
@@ -107,8 +108,8 @@ namespace Flarial
             {
                 if (!File.Exists(LauncherPath))
                 {
-                    await DownloadLauncher();
-                    return;
+                    bool success = await DownloadLauncher();
+                    return success;
                 }
                 string json = await client.GetStringAsync(LauncherVersion);
                 using JsonDocument doc = JsonDocument.Parse(json);
@@ -117,10 +118,11 @@ namespace Flarial
                 var info = FileVersionInfo.GetVersionInfo(LauncherPath);
                 if (info.FileVersion != version)
                 {
-                    await DownloadLauncher();
+                    bool success = await DownloadLauncher();
+                    return success;
                 }
             }
-            catch { }
+            catch { return false; }
 
             /*
              * The dll doesnt have a version, so we get the hash of the 
@@ -131,18 +133,20 @@ namespace Flarial
             {
                 if (!File.Exists(DLLPath))
                 {
-                    await DownloadDLL();
-                    return;
+                    bool success = await DownloadDLL();
+                    return success;
                 }
                 string json = await client.GetStringAsync(DLLHASHES);
                 using JsonDocument doc = JsonDocument.Parse(json);
                 string? hash = doc.RootElement.GetProperty("Release").GetString();
                 if (await GetLocalHashAsync() != hash)
                 {
-                    await DownloadDLL();
+                    bool success = await DownloadDLL();
+                    return success;
                 }
             }
-            catch { }
+            catch { return false; }
+            return false;
         }
 
 
@@ -173,7 +177,7 @@ namespace Flarial
         /// Interact with the launcher to start the game with the dll injected,
         /// this is done by starting the launcher with the appropriate arguments.
         /// </summary>
-        public static async Task StartGame()
+        public static async Task<bool> StartGame()
         {
             try
             {
@@ -189,12 +193,11 @@ namespace Flarial
                     };
                     Process.Start(startInfo);
                 });
+                return true;
             }
-            catch (Exception ex)
+            catch { }
             {
-                {
-                    MessageBox.Show(ex.Message);
-                }
+                return false;
             }
         }
     }

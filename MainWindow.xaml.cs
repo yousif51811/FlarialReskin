@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System.Diagnostics;
+using System.IO;
 using System.Net;
 using System.Net.Http;
 using System.Windows;
@@ -51,19 +52,39 @@ namespace Flarial
                 LaunchBtn.IsEnabled = false;
                 LaunchContent.Text = "Updating";
                 LaunchIcon.Text = " ";
-                await ClientHandler.CheckForUpdates();
+                if (!await ClientHandler.CheckForUpdates())
+                {
+                    FailedLaunch();
+                    return;
+                }
                 LaunchContent.Text = "Starting";
                 LaunchIcon.Text = " ";
-                await ClientHandler.StartGame();
+                if (!await ClientHandler.StartGame())
+                {
+                    FailedLaunch();
+                    return;
+                }
+                await Task.Delay(2000);
                 LaunchContent.Text = "Launch";
                 LaunchBtn.IsEnabled = true;
             }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-            }
+            catch { FailedLaunch(); }
         }
-
+        private async void FailedLaunch()
+        {
+            LaunchContent.Text = "Failed";
+            LaunchIcon.Text = " ";
+            await Task.Delay(2000).ContinueWith(_ =>
+            {
+                Dispatcher.Invoke(() =>
+                {
+                    LaunchContent.Text = "Launch";
+                    LaunchIcon.Text = " ";
+                    LaunchBtn.IsEnabled = true;
+                });
+            });
+            LaunchBtn.IsEnabled = true;
+        }
 
         /// <summary>
         /// Sets the greeting text based on the current time of day.
@@ -78,11 +99,8 @@ namespace Flarial
                 case >= 12 and < 18:
                     GreetingMain.Text = "Good Afternoon!";
                     break;
-                case >= 18 and < 22:
+                default:
                     GreetingMain.Text = "Good Evening!";
-                    break;
-                case >= 22 or < 5:
-                    GreetingMain.Text = "Good Night!";
                     break;
             }
         }
